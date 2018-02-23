@@ -1,0 +1,7 @@
+.DS_Store
+.idea/
+inventory.iml
+lib/
+out/
+target/
+src/main/resources/jdbc.properties
