@@ -5,3 +5,4 @@ lib/
 out/
 target/
 src/main/resources/jdbc.properties
+src/main/resources/core.properties

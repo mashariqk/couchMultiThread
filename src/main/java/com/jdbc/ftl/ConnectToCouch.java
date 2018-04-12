@@ -18,8 +18,14 @@ public class ConnectToCouch {
     ResponseHandler<String> handler = new BasicResponseHandler();
 
     public String getHttpResponse(String url) throws IOException {
-        HttpGet httpGet = new HttpGet(url);
-        String body = client.execute(httpGet, handler);
+        HttpGet httpGet =null;
+        String body = null;
+        try {
+            httpGet = new HttpGet(url.replaceAll("\uFEFF",""));
+            body = client.execute(httpGet, handler);
+        } catch (IOException e) {
+            System.out.println("URL of exception "+ url);
+        }
         return body;
     }
 }

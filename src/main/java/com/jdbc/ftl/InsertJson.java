@@ -17,8 +17,11 @@ public class InsertJson implements Runnable {
     }
 
     public void pushDataToCouch() throws Exception {
-        for (String url:this.fileList){
-            this.connect.insertJsonData(url.substring(url.indexOf("%22") + 3,url.lastIndexOf("%22")),this.couch.getHttpResponse(url));
+        for (String urls:this.fileList){
+            String[] urlArray = urls.split(",");
+            String json = urlArray[0];
+            String xml = urlArray[1];
+            this.connect.insertJsonData(json.substring(json.indexOf("%22") + 3,json.lastIndexOf("%22")),this.couch.getHttpResponse(json),this.couch.getHttpResponse(xml));
         }
         System.out.println(" Finished Thread "+ ++counter);
     }

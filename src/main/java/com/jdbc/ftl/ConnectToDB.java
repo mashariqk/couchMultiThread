@@ -18,14 +18,15 @@ public class ConnectToDB {
         this.jdbcURL = jdbcURL;
     }
 
-    public void insertJsonData(String invStr,String json) throws Exception{
+    public void insertJsonData(String invStr,String json, String xml) throws Exception{
         {
             try {
                 Class.forName(jdbcDriverStr);
                 connection = DriverManager.getConnection(jdbcURL);
-                preparedStatement = connection.prepareStatement("insert into dbo.inv_couch_load values (?,?)");
+                preparedStatement = connection.prepareStatement("insert into inv_couch_load(invStr, jsonout, xmlavail) values (?, ?, ?)");
                 preparedStatement.setString(1,invStr);
                 preparedStatement.setString(2,json);
+                preparedStatement.setString(3,xml);
                 java.util.Date startDate = new Date();
                 preparedStatement.executeUpdate();
                 connection.commit();
