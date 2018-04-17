@@ -1,5 +1,11 @@
 package com.jdbc.ftl;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.json.ftl.XmlMapping;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
 import java.sql.*;
 import java.util.Date;
 
@@ -19,7 +25,8 @@ public class ConnectToDB {
     }
 
     public void insertJsonData(String invStr,String json, String xml) throws Exception{
-        {
+
+        if(checkJsonOutput(xml)){
             try {
                 Class.forName(jdbcDriverStr);
                 connection = DriverManager.getConnection(jdbcURL);
@@ -34,6 +41,24 @@ public class ConnectToDB {
                 close();
             }
         }
+    }
+
+    private boolean checkJsonOutput(String xml) throws IOException {
+        boolean returnValue = false;
+        if ((StringUtils.isEmpty(xml))){
+            returnValue = true;
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                XmlMapping xmlMapping = mapper.readValue(xml,XmlMapping.class);
+                if (StringUtils.isNotEmpty(xmlMapping.getAllowFulfillment()) && "false".equals(xmlMapping.getAllowFulfillment())){
+                    returnValue = true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return returnValue;
     }
 
     public void readAndInsertTestData() throws Exception{
